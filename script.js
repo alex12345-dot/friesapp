@@ -3,6 +3,9 @@ const reviewsContainer = document.querySelector("#reviews");
 const form = document.querySelector("#review-form");
 const clearButton = document.querySelector("#clear");
 const template = document.querySelector("#review-template");
+const mapFrame = document.querySelector("#map-frame");
+const nameInput = document.querySelector("#name");
+const ratingInput = document.querySelector("#rating");
 const mapQueryInput = document.querySelector("#map-query");
 const searchPlacesButton = document.querySelector("#search-places");
 const placeResults = document.querySelector("#place-results");
@@ -29,6 +32,11 @@ function saveReviews(reviews) {
 
 function stars(rating) {
   return "★".repeat(rating) + "☆".repeat(5 - rating);
+}
+
+function setMapByRestaurantName(name) {
+  const encoded = encodeURIComponent(name.trim() || "Italia");
+  mapFrame.src = `https://www.google.com/maps?q=${encoded}&output=embed`;
 }
 
 function setMapByQuery(query) {
@@ -59,6 +67,7 @@ function renderReviews() {
   reviews.forEach((review) => {
     const card = template.content.cloneNode(true);
     card.querySelector(".title").textContent = review.name;
+    card.querySelector(".meta").textContent = `${stars(review.rating)} (${review.rating}/5)`;
     card.querySelector(".meta").textContent = `${review.city} · ${stars(review.rating)} (${review.rating}/5)`;
     card.querySelector(".chips").textContent = `Tipo: ${review.type}`;
     card.querySelector(".comment").textContent = review.comment;
@@ -66,6 +75,8 @@ function renderReviews() {
   });
 }
 
+nameInput.addEventListener("input", () => {
+  setMapByRestaurantName(nameInput.value);
 async function searchPlaces() {
   const query = mapQueryInput.value.trim() || nameInput.value.trim();
   if (!query) {
@@ -148,6 +159,10 @@ mapQueryInput.addEventListener("keydown", (event) => {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+
+  const review = {
+    name: nameInput.value.trim(),
+    rating: Number(ratingInput.value),
   const data = new FormData(form);
   const review = {
     name: data.get("name")?.toString() || nameInput.value.trim(),
@@ -162,6 +177,7 @@ form.addEventListener("submit", (event) => {
   saveReviews(reviews);
   renderReviews();
   form.reset();
+  setMapByRestaurantName("Italia");
   placeResults.innerHTML = '<option value="">Nessun risultato selezionato</option>';
   foundPlaces = [];
   mapStatus.textContent = "";
