@@ -10,6 +10,7 @@
     <header class="hero">
       <h1>🍟 Fries Finder</h1>
       <p>Cerca il ristorante su Google Maps, vota le patatine e pubblica.</p>
+      <p>La community italiana per recensire i ristoranti con le patatine migliori.</p>
     </header>
 
     <main class="layout">
@@ -21,17 +22,65 @@
             <input type="text" id="name" name="name" required placeholder="Es. Friggitoria Milano" />
           </label>
 
+        <h2>Aggiungi una recensione</h2>
+        <form id="review-form">
+          <label>
+            Nome ristorante
+            <input type="text" id="name" name="name" required placeholder="Es. Friggitoria Milano" />
+          </label>
+
+          <div class="map-search">
+            <label>
+              Cerca ristorante (Google Maps)
+              <input type="text" id="map-query" placeholder="Scrivi il nome del ristorante" />
+            </label>
+            <button type="button" id="search-places">Cerca</button>
+          </div>
+
+          <label>
+            Seleziona risultato
+            <select id="place-results">
+              <option value="">Nessun risultato selezionato</option>
+            </select>
+          </label>
+
+          <p id="map-status" class="status"></p>
+
+          <label>
+            Città
+            <input type="text" id="city" name="city" required placeholder="Es. Roma" />
+          </label>
+
           <label>
             Voto patatine (1-5)
             <input type="number" id="rating" name="rating" min="1" max="5" required />
           </label>
 
           <button type="submit">Pubblica</button>
+          <label>
+            Tipo di patatine
+            <select id="type" name="type" required>
+              <option value="">Seleziona...</option>
+              <option>Croccanti classiche</option>
+              <option>Steakhouse</option>
+              <option>Wedges speziate</option>
+              <option>Dolci (sweet potato)</option>
+              <option>Al forno</option>
+            </select>
+          </label>
+
+          <label>
+            Commento
+            <textarea id="comment" name="comment" rows="4" required placeholder="Com'erano? Croccanti? Salate al punto giusto?"></textarea>
+          </label>
+
+          <button type="submit">Pubblica recensione</button>
         </form>
       </section>
 
       <section class="panel">
         <h2>Mappa ristorante</h2>
+        <h2>Mappa ristorante selezionato</h2>
         <iframe
           id="map-frame"
           class="map"
@@ -55,6 +104,12 @@
       <article class="review-card">
         <h3 class="title"></h3>
         <p class="meta"></p>
+        <header>
+          <h3 class="title"></h3>
+          <p class="meta"></p>
+        </header>
+        <p class="chips"></p>
+        <p class="comment"></p>
       </article>
     </template>
 
